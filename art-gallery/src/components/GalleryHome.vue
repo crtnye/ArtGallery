@@ -1,36 +1,25 @@
 <template>
     <div>
-        <h1>This is the Gallery </h1>
-        <button @click="getSomeArtFromApi">
-            Get some art from the api
-        </button>
+        <h1>GALLERY</h1>
 
-        <table>
-            <thead>
-                <tr>
-                    <th v-bind:key="key" v-for="key in artInfo">
-                        {{ key }}
-                    </th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr v-bind:key="id" v-for="id in allArt">
-                    <td v-bind:key="key" v-for="key in artInfo">
-                        {{id[key]}}
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-        
+        <div class="flex-container" >
+            <Artwork :key="artwork.id" v-for="artwork in allArt"
+                :work="artwork">
+            </Artwork>
+        </div>
     </div>
 </template>
 
 <script>
 
 import service from "../utilities/service";
+import Artwork from "./Artwork";
 
 export default {
     name: "GalleryHome",
+    components: {
+        Artwork
+    },
     data() {
         return{
             allArt: [],
@@ -39,7 +28,7 @@ export default {
                 "title",
                 "artist_display",
                 "date_display",
-                "main_reference_number"
+                "image_id"
             ]
         }
     },
@@ -51,10 +40,22 @@ export default {
                     this.allArt = response;
                 });
         }
+    },
+    created(){
+        this.getSomeArtFromApi();
     }
 
 }
 </script>
 
-<style>
+<style> 
+
+.flex-container{
+    display: flex;
+    flex-direction: row;
+    gap: 24px;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
 </style>
